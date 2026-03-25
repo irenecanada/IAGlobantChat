@@ -26,16 +26,16 @@ struct Chat: View {
                 
             }){
                 Text("Create First Chat")
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
                     .padding()
+                    .foregroundColor(.white)
                     .background(Color.blue)
-                    .cornerRadius(30)
-                    .shadow(radius: 5)
-                    .padding(.top, 20)
-                    
+                    .cornerRadius(35)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 35)
+                            .stroke(Color.black, lineWidth: 2))
+                
             }.padding(.horizontal, 115)
+                .padding(.top, 20)
         }
     }
 }
