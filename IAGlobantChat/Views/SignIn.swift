@@ -58,7 +58,7 @@ struct SignIn: View {
                 }
                 
                 
-                NavigationLink(destination: Chat(), isActive: $viewModel.isLogged) {
+                NavigationLink(destination: TabViewMain(), isActive: $viewModel.isLogged) {
                     EmptyView()
                 }
                 
