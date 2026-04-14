@@ -7,6 +7,7 @@
 import SwiftUI
 
 struct SignUpScreen: View {
+    @Environment(LocalService.self) var localService
     @State var viewModel = SignUpViewModel()
     @Binding var isActive: Bool
     
@@ -42,7 +43,7 @@ struct SignUpScreen: View {
             }
             .padding(.horizontal, 25)
             
-            Button(action: { viewModel.createAccount() }) {
+            Button(action: { viewModel.createAccount(localService: localService) }) {
                 Text("Create account")
                     .font(.headline)
                     .foregroundStyle(.white)

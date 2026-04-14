@@ -36,7 +36,7 @@ struct SignInScreen: View {
                 }
                 
                 Button(action: {
-                    Task { await viewModel.login() }
+                    Task { await viewModel.login(localService: localService) }
                 }) {
                     Text("Sign in")
                         .font(.headline)
@@ -47,12 +47,6 @@ struct SignInScreen: View {
                         .cornerRadius(15)
                         .shadow(radius: 5)
                 }
-                
-                
-                NavigationLink(destination: TabMainView(), isActive: $viewModel.isLogged) {
-                    EmptyView()
-                }
-                
                 if viewModel.isLoading {
                     ProgressView()
                 }
@@ -85,5 +79,4 @@ struct SignInScreen: View {
         }
     }
 }
-
 

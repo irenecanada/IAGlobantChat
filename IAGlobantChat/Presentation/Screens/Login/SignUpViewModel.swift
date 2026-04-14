@@ -19,9 +19,7 @@ import SwiftUI
     var isLogged = false
     var isCreated = false
     
-    private let localService = LocalService()
-    
-    func createAccount() {
+    func createAccount(localService: LocalService) {
         if name.isEmpty && email.isEmpty && password.isEmpty && password2.isEmpty{
             isCreated = false
             errorMessage = "Please fill in all fields"
@@ -38,4 +36,3 @@ import SwiftUI
         
     }
 }
-

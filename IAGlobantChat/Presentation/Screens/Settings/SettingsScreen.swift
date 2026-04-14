@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SettingsScreen: View {
-    @State var viewModel = SettingsViewModel()
     @Environment(LocalService.self) var localService
     @State var show = false
 
@@ -21,7 +20,7 @@ struct SettingsScreen: View {
                             .resizable()
                             .frame(width: 50, height: 50)
                             .foregroundColor(.gray.opacity(0.3))
-                        if let user = viewModel.getUser() {
+                        if let user = localService.currentUser {
                             VStack(alignment: .leading, spacing: 5) {
                                 Text(user.name)
                                     .font(.headline)

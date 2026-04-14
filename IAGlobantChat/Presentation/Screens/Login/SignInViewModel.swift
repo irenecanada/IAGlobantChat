@@ -19,10 +19,8 @@ import SwiftUI
     var isLogged = false
     var isCreated = false
     
-    private let localService = LocalService()
-    
     @MainActor
-    func login() async {
+    func login(localService: LocalService) async {
         errorMessage = nil
         isLoading = true
         
@@ -36,7 +34,8 @@ import SwiftUI
             return
         }
         
-        if email == user?.email && password == user?.password {
+        if let user, email == user.email && password == user.password {
+            localService.login(user: user)
             isLogged = true
         } else {
             errorMessage = "El email o la contraseña no coinciden con la cuenta creada."
@@ -50,4 +49,3 @@ import SwiftUI
     
     
 }
-

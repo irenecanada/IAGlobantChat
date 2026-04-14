@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 @Observable class LocalService {
     
     private let userDefaults: UserDefaults
@@ -20,6 +21,10 @@ import Foundation
         if let data = try? JSONEncoder().encode(user){
             userDefaults.set(data, forKey: "userName")
         }
+    }
+
+    func login(user: User) {
+        currentUser = user
     }
     
     func getUser() -> User? {
