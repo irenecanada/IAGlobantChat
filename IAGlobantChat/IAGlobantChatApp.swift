@@ -9,9 +9,28 @@ import SwiftUI
 
 @main
 struct IAGlobantChatApp: App {
+    @State var localService = LocalService()
+    
+    init() {
+        localService.restoreUser()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            SignIn()
+            RootView()
+                .environment(localService)
+        }
+    }
+}
+
+struct RootView: View {
+    @Environment(LocalService.self) var localService
+    
+    var body: some View {
+        if localService.currentUser != nil {
+            TabMainView()
+        } else {
+            SignInScreen(viewModel: SignInViewModel())
         }
     }
 }

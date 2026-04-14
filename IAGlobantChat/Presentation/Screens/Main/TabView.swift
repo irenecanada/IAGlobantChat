@@ -7,20 +7,25 @@
 
 import SwiftUI
 
-struct TabViewMain: View {
+struct TabMainView: View {
     var body: some View {
         TabView{
-            Chat().tabItem {
+            NavigationStack {
+                            ChatNoMessagesView()
+            }.tabItem {
                 Label("Home", systemImage: "house")
             }
-            Chat().tabItem {
+            NavigationStack {
+                            SettingsScreen()
+            }.tabItem {
                 Label("Settings", systemImage: "gearshape")
             }
+            
             
         }
     }
 }
 
 #Preview {
-    TabViewMain()
+    TabMainView()
 }
