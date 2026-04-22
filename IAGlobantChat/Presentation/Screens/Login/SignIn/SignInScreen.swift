@@ -8,7 +8,6 @@ import SwiftUI
 
 struct SignInScreen: View {
     @Environment(LocalService.self) var localService
-    @State private var isSignupActive = false
     @State var viewModel: SignInViewModel
     
     var body: some View {
@@ -57,7 +56,7 @@ struct SignInScreen: View {
                 Text("Don't have an account?").font(.subheadline)
                 
                 NavigationLink {
-                    SignUpScreen(isActive: $isSignupActive)
+                    SignUpScreen()
                 } label: {
                     Text("Sign up")
                         .fontWeight(.bold)

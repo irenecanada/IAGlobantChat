@@ -16,7 +16,7 @@ struct TabMainView: View {
                 Label("Home", systemImage: "house")
             }
             NavigationStack {
-                            SettingsScreen()
+                SettingsScreen()
             }.tabItem {
                 Label("Settings", systemImage: "gearshape")
             }
