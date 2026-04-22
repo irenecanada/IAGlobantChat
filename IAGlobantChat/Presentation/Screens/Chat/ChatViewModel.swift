@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 @Observable class ChatViewModel {
-    
+
     var chats: [Chat] = []
     
     

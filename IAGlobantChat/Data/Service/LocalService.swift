@@ -21,6 +21,7 @@ import Foundation
         if let data = try? JSONEncoder().encode(user){
             userDefaults.set(data, forKey: "userName")
         }
+        currentUser = user
     }
 
     func login(user: User) {
