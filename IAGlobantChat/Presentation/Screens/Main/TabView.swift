@@ -11,7 +11,7 @@ struct TabMainView: View {
     var body: some View {
         TabView{
             NavigationStack {
-                            ChatNoMessagesView()
+                ChatEmptyView()
             }.tabItem {
                 Label("Home", systemImage: "house")
             }

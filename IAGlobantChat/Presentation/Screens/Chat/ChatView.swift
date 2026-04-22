@@ -4,7 +4,7 @@
 //
 //  Created by Irene Canada Gomez on 9/4/26.
 //
-
+import Foundation
 import SwiftUI
 
 struct ChatView: View {

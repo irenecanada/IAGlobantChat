@@ -56,18 +56,14 @@ struct SignInScreen: View {
             HStack {
                 Text("Don't have an account?").font(.subheadline)
                 
+                NavigationLink {
+                    SignUpScreen(isActive: $isSignupActive)
+                } label: {
+                    Text("Sign up")
+                        .fontWeight(.bold)
+                        .foregroundColor(.blue)
+                }
                 
-                NavigationLink(
-                    isActive: $isSignupActive,
-                    destination: {
-                        SignUpScreen(isActive: $isSignupActive)
-                    },
-                    label: {
-                        Text("Sign up")
-                            .fontWeight(.bold)
-                            .foregroundColor(.blue)
-                        
-                    })
             }
             .padding()
             

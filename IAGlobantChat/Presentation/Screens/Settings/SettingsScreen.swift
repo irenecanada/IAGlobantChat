@@ -9,82 +9,50 @@ import SwiftUI
 
 struct SettingsScreen: View {
     @Environment(LocalService.self) var localService
+    @Environment(ChatService.self) var chatService
     @State var show = false
+    //@State var viewModel = SettingsViewModel()
 
     var body: some View {
         VStack{
             List{
-                Section(header: Text("ACCOUNT")) {
-                    HStack(spacing: 15) {
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                            .foregroundColor(.gray.opacity(0.3))
-                        if let user = localService.currentUser {
-                            VStack(alignment: .leading, spacing: 5) {
-                                Text(user.name)
-                                    .font(.headline)
-                                Text(user.email)
-                                    .font(.subheadline).foregroundColor(.secondary)
-                            }
-                        }
-                    }
-                }
+                SettingsSection(secctionTitle: "ACCOUNT",
+                                image: "person.circle.fill",
+                                user: localService.currentUser,
+                                color: .secondary,
+                                colorBack: .gray)
                 
-                
-                Section(header: Text("MESSAGES")) {
-                    HStack(spacing: 15) {
-                        Image(systemName: "text.bubble")
-                            .font(.system(size: 30))
-                            .foregroundColor(.white)
-                            .frame(width: 50, height: 50)
-                            .background(Color.blue)
-                            .opacity(0.7)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                        
-                        
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("Total Chats: ")
-                            HStack{
-                                Text("User").font(.subheadline).foregroundColor(.secondary)
-                                Text("conversations").font(.subheadline).foregroundColor(.secondary)
-                            }
-                        }
-                    }
-                }
+                SettingsSection(secctionTitle: "MESSAGES",
+                                image: "text.bubble",
+                                title: "Total Chats",
+                                descripcion: "\(chatService.chats.count) conversations",
+                                color: .white,
+                                colorBack: .blue)
                 
                 Section(header: Text("DANGER ZONE")) {
                     Button(action: {
                         show = true
-                    }){
-                        HStack(spacing: 15) {
-                            Image(systemName: "trash")
-                                .font(.system(size: 30))
-                                .frame(width: 50, height: 50)
-                                .foregroundColor(.red)
-                                .background(Color.red.opacity(0.2))
-                                .foregroundColor(.red)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                            
-                            VStack(alignment: .leading, spacing: 5) {
-                                Text("Delete all chats ").font(.headline).foregroundColor(.red)
-                                Text("This action cannot be undone ").font(.headline).foregroundColor(.gray)
-                                
-                            }
+                    }) {
+                        SettingsSection(
+                            secctionTitle: "",
+                            image: "trash",
+                            title: "Delete all chats",
+                            descripcion: "This action cannot be undone",
+                            color: .white,
+                            colorBack: .red
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .alert("Delete all chats", isPresented: $show) {
+                        Button("Delete all") {
+                            chatService.deleteChats()
                         }
-                    }.alert("Delete all chats", isPresented: $show){
-                        Button("Delete all", role: .destructive){
-                            
-                        }
-                        Button("Cancel", role: .cancel){
-                            
-                        }
-                    }message: {
+                        Button("Cancel", role: .cancel) { }
+                    } message: {
                         Text("This will permanently delete all your chats. This action cannot be undone.")
                     }
-                    
                 }
-                .padding(.vertical, 4)
+                
                 
                 Section{
                     Button(action: {
@@ -105,8 +73,6 @@ struct SettingsScreen: View {
                         )
                         
                     }
-                    
-                    
                 }
                 Section {
                     VStack(alignment: .center, spacing: 4) {
@@ -119,13 +85,23 @@ struct SettingsScreen: View {
                     .listRowBackground(Color.clear)
                 }
             }
-            .navigationTitle("Settings")
+            .padding(.vertical, 4)
+        }
+        .navigationTitle("Settings")
+        .onAppear {
+            chatService.restoreChats()
+            print(chatService.chats.count)
         }
     }
+    
 }
 
 
 
-#Preview {
-    SettingsScreen()
-}
+
+//#Preview {
+//  SettingsScreen()
+//}
+
+
+

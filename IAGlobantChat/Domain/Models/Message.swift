@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct Message: Codable, Identifiable {
+    let id: UUID
+    let text: String
+    let user: Bool
+}

@@ -9,6 +9,8 @@ import Foundation
 
 class SettingsViewModel {
     private let localService = LocalService()
+    private let chatService = ChatService()
+    var total : Int = 0
     
     func getUser() -> User? {
         return localService.getUser()
@@ -17,4 +19,10 @@ class SettingsViewModel {
     func deleteUser() {
         localService.deleteUser()
     }
+    
+    func getChats()  {
+        total = chatService.chats.count
+        print(total)
+    }
+    
 }

@@ -7,8 +7,9 @@
 
 import Foundation
 
-struct Chat: Codable {
+struct Chat: Codable, Identifiable {
+    let id: UUID
     let name: String
-    let message: String
     let date: Date
+    var messages: [Message]
 }

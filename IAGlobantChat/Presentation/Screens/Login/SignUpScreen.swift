@@ -8,6 +8,7 @@ import SwiftUI
 
 struct SignUpScreen: View {
     @Environment(LocalService.self) var localService
+    @Environment(\.dismiss) private var dismiss
     @State var viewModel = SignUpViewModel()
     @Binding var isActive: Bool
     

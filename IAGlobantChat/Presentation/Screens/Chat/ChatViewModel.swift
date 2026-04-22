@@ -6,3 +6,25 @@
 //
 
 import Foundation
+import SwiftUI
+
+@Observable class ChatViewModel {
+    
+    var chats: [Chat] = []
+    
+    
+    @MainActor
+    func loadChats(chatService: ChatService) {
+        chats = chatService.getChats()
+    }
+    
+    
+    func hasChats() -> Bool {
+        if chats.isEmpty{
+            return false
+        } else {
+            return true
+        }
+    }
+    
+}
