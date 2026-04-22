@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ChatNoMessagesView: View {
+struct  ChatEmptyView: View {
     
     @State private var show = false
     @State private var Started = false
