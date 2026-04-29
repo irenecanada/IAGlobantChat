@@ -9,31 +9,31 @@ import SwiftUI
 struct SignInScreen: View {
     @Environment(LocalService.self) var localService
     @State var viewModel: SignInViewModel
-    
+
     var body: some View {
+        @Bindable var viewModel = viewModel
         NavigationStack {
             VStack(spacing: 50) {
-                Header(titulo: "Welcome Back", descripcion: "Sign in to continue messaging")
-                
+                HeaderView(titulo: "Welcome Back",
+                           descripcion: "Sign in to continue messaging")
+
                 VStack(alignment: .leading, spacing: 15) {
-                    Text("Email").font(.subheadline)
-                    TextField("you@example.com", text: $viewModel.email)
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(12)
-                    
-                    Text("Password").font(.subheadline)
-                    SecureField("Enter your password", text: $viewModel.password)
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(12)
+
+                    FormTextField(title: "Email",
+                                  placeholder: "you@example.com",
+                                  value: $viewModel.email)
+                    FormTextField(title: "Password",
+                                  placeholder: "At least 6 characters",
+                                  isSecure: true,
+                                  value: $viewModel.password)
+
                 }
                 .padding(.horizontal, 25)
-                
+
                 if let error = viewModel.errorMessage {
                     Text(error).foregroundColor(.red)
                 }
-                
+
                 Button(action: {
                     Task { await viewModel.login(localService: localService) }
                 }) {
@@ -51,27 +51,15 @@ struct SignInScreen: View {
                 }
             }
             .padding(.horizontal, 25)
-            
-            HStack {
-                Text("Don't have an account?").font(.subheadline)
-                
-                NavigationLink {
-                    SignUpScreen()
-                } label: {
-                    Text("Sign up")
-                        .fontWeight(.bold)
-                        .foregroundColor(.blue)
-                }
-                
-            }
-            .padding()
-            
-            Text("By Signing In, you agree to our Terms and Privacy Policy.")
-                .font(.caption)
-                .foregroundColor(.secondary)
-                .padding(.horizontal, 40)
-                .padding(.bottom, 20)
+
+            FooterView(
+                title: "Don't have an account?",
+                content: AnyView(
+                    NavigationLink("Sign up") { SignUpScreen() }
+                )
+            )
         }
     }
 }
+
 

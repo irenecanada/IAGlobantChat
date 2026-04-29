@@ -12,11 +12,13 @@ struct SignUpScreen: View {
     @State var viewModel = SignUpViewModel()
 
     var body: some View {
-        VStack(spacing: 20) {
-            
-            Header(titulo: "Create account", descripcion: "Sign Up to start messaging")
+        @Bindable var viewModel = viewModel
 
-            @Bindable var viewModel = viewModel
+        VStack(spacing: 20) {
+
+            HeaderView(titulo: "Create account", descripcion: "Sign Up to start messaging")
+
+
             VStack(alignment: .leading, spacing: 15) {
                 FormTextField(title: "Full Name",
                               placeholder: "Jhon Doe",
@@ -31,15 +33,26 @@ struct SignUpScreen: View {
                 FormTextField(title: "Confirm Password",
                               placeholder: "Re-Enter your password",
                               isSecure: true,
-                              value: $viewModel.password2)
+                              value: $viewModel.confirmPassword)
             }
             .padding(.horizontal, 25)
 
-            createAccountButton
 
             if viewModel.isLoading {
                 ProgressView()
             }
+            
+            createAccountButton
+
+            FooterView(
+                title: "Already have an account?",
+                content: AnyView(
+                    Button("Sign in") { dismiss() }
+                )
+            )
+        }.navigationDestination(isPresented: $viewModel.success) {
+            ChatScreen()
+                .navigationBarBackButtonHidden(true) 
         }
     }
 
@@ -55,22 +68,4 @@ struct SignUpScreen: View {
         }
         .padding(.horizontal, 30)
     }
-
-    var footer: some View {
-        HStack {
-            Text("Already have an account?").font(.subheadline)
-            Button {
-                dismiss()
-            } label: {
-                Text("Sign In")
-                    .fontWeight(.bold)
-                    .foregroundColor(.blue)
-            }
-
-        }
-    }
-}
-
-#Preview {
-    SignUpScreen()
 }

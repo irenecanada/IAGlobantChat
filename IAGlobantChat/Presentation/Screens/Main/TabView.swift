@@ -11,7 +11,7 @@ struct TabMainView: View {
     var body: some View {
         TabView{
             NavigationStack {
-                ChatEmptyView()
+                ChatScreen()
             }.tabItem {
                 Label("Home", systemImage: "house")
             }
@@ -20,7 +20,12 @@ struct TabMainView: View {
             }.tabItem {
                 Label("Settings", systemImage: "gearshape")
             }
-            
+            NavigationStack {
+                NewsScreen()
+            }.tabItem {
+                Label("News", systemImage: "newspaper")
+            }
+
             
         }
     }

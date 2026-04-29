@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Header: View {
+struct HeaderView: View {
     @State public var titulo : String
     @State public var descripcion : String
     var body: some View {

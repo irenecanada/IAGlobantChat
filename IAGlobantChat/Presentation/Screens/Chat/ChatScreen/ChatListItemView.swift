@@ -7,11 +7,9 @@
 import Foundation
 import SwiftUI
 
-struct ChatView: View {
-    let name: String
-    let message: String
-    let time: String
-    
+struct ChatListItemView: View {
+    let chat: Chat
+
     var body: some View {
         HStack(spacing: 15) {
             Image(systemName: "person.circle.fill")
@@ -21,11 +19,15 @@ struct ChatView: View {
             
             VStack(alignment: .leading, spacing: 5) {
                 HStack {
-                    Text(name).font(.headline)
+                    Text(chat.name).font(.headline)
                     Spacer()
-                    Text(time).font(.subheadline).foregroundColor(.secondary)
+                    Text(chat.date, style: .time)
+                                            .font(.subheadline)
+                                            .foregroundColor(.secondary)
                 }
-                Text(message).font(.subheadline).foregroundColor(.secondary)
+                Text(chat.messages.last?.text ?? "No messages yet")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
             }
         }
         .padding(.vertical, 4)

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-@Observable class ChatViewModel {
+@Observable class ChatScreenViewModel {
 
     var chats: [Chat] = []
     

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct DetalleView: View {
+struct ChatDetailScreen: View {
     let chatId: UUID
     @Environment(ChatService.self) var chatService
     @State private var show = false

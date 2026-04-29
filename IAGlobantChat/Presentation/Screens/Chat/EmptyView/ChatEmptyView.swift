@@ -1,29 +1,18 @@
 //
-//  Chat.swift
+//  ChatEmptyView.swift
 //  IAGlobantChat
 //
-//  Created by Irene Canada Gomez on 24/3/26.
+//  Created by Irene Canada Gomez on 4/22/26.
 //
 
 import SwiftUI
 
-struct  ChatEmptyView: View {
+struct ChatEmptyView: View {
     @Environment(ChatService.self) var chatService
-    @State var viewModel = ChatViewModel()
     @State private var show = false
     @State var name =  ""
 
     var body: some View {
-        Group {
-            if chatService.hasChats() {
-                ChatScreen()
-            } else {
-                emptyView
-            }
-        }
-    }
-
-    var emptyView: some View {
         VStack {
             Image(systemName: "ellipsis.message")
                 .resizable()
@@ -67,8 +56,8 @@ struct  ChatEmptyView: View {
                     Text("Chat Name")
                 }
         }
+
     }
 }
-
 
 
