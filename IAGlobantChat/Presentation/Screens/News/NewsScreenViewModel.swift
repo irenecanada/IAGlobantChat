@@ -7,7 +7,6 @@
 
 import Foundation
 import Combine
-import Foundation
 
 @MainActor
 class NewsViewModel: ObservableObject {
@@ -15,32 +14,46 @@ class NewsViewModel: ObservableObject {
     @Published var isLoading = false
     private let service = NewsService()
     private var currentPage = 1
-    private var currentQuery = ""
-    @Published var noResults = false
-
-    func fetch(query: String = "") async {
-        if query != currentQuery {
-            currentQuery = query
-            currentPage = 1
-            articulos = []
-            noResults = false
+    @Published var searchText = "" {
+        didSet {
+            Task { await search(query: searchText) }
         }
+    }
+
+    func fetch() async {
 
         guard !isLoading else { return }
         isLoading = true
 
         do {
-            let nuevos = try await service.getNews(page: currentPage, query: query)
+            let nuevos = try await service.getNews(page: currentPage)
 
-            if nuevos.isEmpty && !query.isEmpty && currentPage == 1 {
-                noResults = true
-            } else {
-                self.articulos += nuevos
-                currentPage += 1
-                noResults = false
-            }
+            self.articulos += nuevos
+            currentPage += 1
+
         } catch {
             print("Error: \(error)")
+        }
+        isLoading = false
+    }
+
+
+    func nextPage(item: Article) {
+        if articulos.last?.id == item.id {
+            Task { await fetch() }
+        }
+    }
+
+
+    func search(query: String) async {
+
+        try? await Task.sleep(for: .seconds(1))
+        guard query == searchText else { return }
+
+        isLoading = true
+        if let resultados = try? await service.search(query: query) {
+            self.articulos = resultados
+            self.currentPage = 1
         }
         isLoading = false
     }

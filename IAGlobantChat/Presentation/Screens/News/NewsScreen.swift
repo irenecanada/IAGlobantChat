@@ -9,15 +9,16 @@ import SwiftUI
 
 struct NewsScreen: View {
     @StateObject var viewModel = NewsViewModel()
-    @State var searchText = ""
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                if viewModel.noResults {
-                    Text("No results for \"\(searchText)\"")
+                if viewModel.articulos.isEmpty {
+
+                    Text("No results for \"\(viewModel.searchText)\"")
                         .foregroundColor(.secondary)
                         .padding(.top, 100)
+
                 } else {
                     VStack {
                         ForEach(viewModel.articulos) { item in
@@ -27,21 +28,17 @@ struct NewsScreen: View {
                                 autor: item.author ?? "Anonimo",
                                 date: item.publishedAt ?? ""
                             )
+
                             .onAppear {
-                                if item.url == viewModel.articulos.last?.url {
-                                    Task { await viewModel.fetch(query: searchText) }
-                                }
+                                viewModel.nextPage(item: item)
                             }
                         }
                     }
                 }
             }
             .navigationTitle("Noticias")
-            .padding(.horizontal, 50)
-            .searchable(text: $searchText)
-            .onChange(of: searchText) {
-                Task { await viewModel.fetch(query: searchText) }
-            }
+            .padding(.horizontal, 20)
+            .searchable(text: $viewModel.searchText)
             .task {
                 await viewModel.fetch()
             }

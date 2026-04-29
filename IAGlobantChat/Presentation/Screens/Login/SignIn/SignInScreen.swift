@@ -31,6 +31,7 @@ struct SignInScreen: View {
                 .padding(.horizontal, 25)
 
                 if let error = viewModel.errorMessage {
+
                     Text(error).foregroundColor(.red)
                 }
 
