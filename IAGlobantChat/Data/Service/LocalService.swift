@@ -41,6 +41,10 @@ import Foundation
         currentUser = nil
     }
 
+    func logout() {
+        currentUser = nil
+    }
+
     func restoreUser() {
         currentUser = getUser()
     }

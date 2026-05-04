@@ -56,7 +56,7 @@ struct SettingsScreen: View {
                 
                 Section{
                     Button(action: {
-                        localService.deleteUser()
+                        localService.logout()
                     }) {
                         HStack {
                             Spacer()

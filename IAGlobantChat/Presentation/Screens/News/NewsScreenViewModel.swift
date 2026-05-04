@@ -16,8 +16,13 @@ class NewsViewModel: ObservableObject {
     private var currentPage = 1
     @Published var searchText = "" {
         didSet {
-            Task { await search(query: searchText) }
-        }
+            if searchText.isEmpty {
+                        articulos = []
+                        currentPage = 1
+                        Task { await fetch() }
+                    } else {
+                        Task { await search(query: searchText) }
+                    }        }
     }
 
     func fetch() async {
@@ -46,6 +51,7 @@ class NewsViewModel: ObservableObject {
 
 
     func search(query: String) async {
+        guard !query.isEmpty else { return }
 
         try? await Task.sleep(for: .seconds(1))
         guard query == searchText else { return }
