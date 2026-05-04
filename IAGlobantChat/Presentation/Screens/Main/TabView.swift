@@ -15,15 +15,17 @@ struct TabMainView: View {
             }.tabItem {
                 Label("Home", systemImage: "house")
             }
-            NavigationStack {
-                SettingsScreen()
-            }.tabItem {
-                Label("Settings", systemImage: "gearshape")
-            }
+
             NavigationStack {
                 NewsScreen()
             }.tabItem {
                 Label("News", systemImage: "newspaper")
+            }
+
+            NavigationStack {
+                SettingsScreen()
+            }.tabItem {
+                Label("Settings", systemImage: "gearshape")
             }
 
             

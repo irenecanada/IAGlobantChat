@@ -77,7 +77,7 @@ import FoundationModels
 
     func deleteChats() {
         chats.removeAll()
-        storeChats()
+        userDefaults.removeObject(forKey: "chats")
     }
 
     func deleteChat(chat : Chat) {

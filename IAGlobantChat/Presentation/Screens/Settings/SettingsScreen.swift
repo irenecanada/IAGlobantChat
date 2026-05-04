@@ -56,7 +56,7 @@ struct SettingsScreen: View {
                 
                 Section{
                     Button(action: {
-                        localService.logout()
+                        logout()
                     }) {
                         HStack {
                             Spacer()
@@ -93,7 +93,12 @@ struct SettingsScreen: View {
             print(chatService.chats.count)
         }
     }
-    
+
+    func logout() {
+        localService.deleteUser()
+        chatService.deleteChats()
+    }
+
 }
 
 

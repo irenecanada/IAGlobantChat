@@ -21,8 +21,11 @@ class NewsViewModel: ObservableObject {
                         currentPage = 1
                         Task { await fetch() }
                     } else {
-                        Task { await search(query: searchText) }
-                    }        }
+                        Task {
+                            await search(query: searchText)
+                        }
+                    }
+        }
     }
 
     func fetch() async {
