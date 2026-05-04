@@ -11,17 +11,14 @@ import SwiftUI
 struct SettingsSection: View {
     @Environment(LocalService.self) var localService
     
-    @State public var secctionTitle : String
-    @State public var image : String
-    @State var user: User?
-    @State public var title: String?
-    @State public var descripcion: String?
-    @State public var color: Color
-    @State public var colorBack: Color
-    
-    
-    
-    
+    let secctionTitle : String
+    let image : String
+    var user: User? = nil
+    var title: String? = nil
+    var descripcion: String? = nil
+    let color: Color
+    let colorBack: Color
+
     var body: some View {
         Section(header: Text(secctionTitle)) {
             HStack(spacing: 15) {
