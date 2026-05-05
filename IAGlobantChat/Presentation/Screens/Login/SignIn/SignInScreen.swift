@@ -5,6 +5,8 @@
 //  Created by Irene Canada Gomez on 23/3/26.
 //
 import SwiftUI
+import FirebaseAuth
+import FirebaseCore
 
 struct SignInScreen: View {
     @Environment(LocalService.self) var localService
@@ -36,7 +38,7 @@ struct SignInScreen: View {
                 }
 
                 Button(action: {
-                    Task { await viewModel.login(localService: localService) }
+                    Task { viewModel.login(localService: localService) }
                 }) {
                     Text("Sign in")
                         .font(.headline)
@@ -52,6 +54,15 @@ struct SignInScreen: View {
                 }
             }
             .padding(.horizontal, 25)
+
+            Button(action: {
+                viewModel.googleSignIn(localService: localService)
+            }) {
+                HStack {
+                    Image("Fixed")
+                }
+            }
+            .padding(.top, 10)
 
             FooterView(
                 title: "Don't have an account?",

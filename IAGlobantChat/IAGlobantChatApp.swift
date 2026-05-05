@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct IAGlobantChatApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
     @State var localService = LocalService()
     @State var chatService = ChatService()
     
