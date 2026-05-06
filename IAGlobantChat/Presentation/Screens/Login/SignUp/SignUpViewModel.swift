@@ -20,6 +20,7 @@ import FirebaseCore
     var isLoading = false
     var errorMessage: String?
     var success = false
+    let googleService = GoogleService()
 
     @MainActor
     func createAccount(localService: LocalService) {
@@ -38,23 +39,22 @@ import FirebaseCore
             return
         }
 
-            isLoading = true
-            errorMessage = nil
+        isLoading = true
+        errorMessage = nil
 
-            Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
-                guard let self = self else { return }
-                self.isLoading = false
+        Task {
+            do {
+                try await googleService.createUser(withEmail: email, password: password)
 
-                if let error = error {
-                    self.errorMessage = error.localizedDescription
-
-                    return
-                }
-
-                let newUser = User(name: self.name, email: self.email, password: self.password)
+                let newUser = User(name: name, email: email, password: password)
                 localService.storeUser(user: newUser)
-                self.success = true
+                success = true
+
+            } catch {
+                errorMessage = error.localizedDescription
             }
 
+            isLoading = false
         }
     }
+}

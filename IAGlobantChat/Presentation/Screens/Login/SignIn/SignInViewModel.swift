@@ -20,83 +20,58 @@ import FirebaseCore
     var isLoading = false
     var errorMessage: String?
     var isLogged = false
-    var isCreated = false
-    
+    let googleService = GoogleService()
+
     @MainActor
     func login(localService: LocalService) {
-        errorMessage = nil
-        isLoading = true
-
-        if email.isEmpty || password.isEmpty {
+        guard !email.isEmpty || !password.isEmpty else {
             errorMessage = "Please fill in all fields"
             isLoading = false
             return
         }
 
+        isLoading = true
+        errorMessage = nil
 
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
-                guard let self = self else { return }
-                self.isLoading = false
+        Task {
+            do {
+                try await googleService.login(withEmail: email, password: password)
 
-                if let error = error {
-                    self.errorMessage = error.localizedDescription
-                    return
-                }
+                let user = User(name: name, email: email, password: password)
+                localService.storeUser(user: user)
+                localService.login(user: user)
+                isLogged = true
 
-                if let user = authResult?.user {
-                    let newUser = User(name: self.name, email: user.email ?? self.email, password: self.password)
-                    localService.storeUser(user: newUser)
-                    localService.login(user: newUser)
-                    self.isLogged = true
-                }
+            } catch {
+                errorMessage = error.localizedDescription
+            }
 
+            isLoading = false
         }
     }
 
 
     @MainActor
     func googleSignIn(localService: LocalService) {
-        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
-        let config = GIDConfiguration(clientID: clientID)
-
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-        let rootViewController = windowScene.windows.first?.rootViewController else { return }
-
         isLoading = true
+        errorMessage = nil
 
-        GIDSignIn.sharedInstance.configuration = config
-        GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { [unowned self] user, error in
-
-
-            guard let user = user?.user,
-            let idToken = user.idToken?.tokenString else {
-                self.isLoading = false
-                return
-            }
-
-            let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
-
-
-            Auth.auth().signIn(with: credential) { authResult, error in
-                self.isLoading = false
-
-                if let error = error {
-                    self.errorMessage = error.localizedDescription
-                    return
-                }
+        Task {
+            if let authResult = await googleService.signInWithGoogle() {
 
                 let googleUser = User(
-                    name: authResult?.user.displayName ?? "GoogleUser",
-                    email: authResult?.user.email ?? "",
-                    password: ""
-                )
+                    name: authResult.user.displayName ?? "GoogleUser",
+                    email: authResult.user.email ?? "",
+                    password: "")
 
                 localService.login(user: googleUser)
-                self.isLogged = true
+                isLogged = true
+
+            } else {
+                errorMessage = "No se pudo iniciar sesión con Google"
             }
+
+            isLoading = false
         }
     }
-
-
-
 }
